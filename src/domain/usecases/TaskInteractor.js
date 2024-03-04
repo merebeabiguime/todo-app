@@ -3,18 +3,23 @@ export class TaskInteractor {
     this._taskRepository = taskRepository;
   }
   async createTask(body) {
-    return this._taskRepository.create(body);
+    const data = await this._taskRepository.create(body);
+    return data;
   }
-  updateTask() {
-    return this._taskRepository.create(body);
+  async updateTask() {
+    const data = await this._taskRepository.update(body);
+    return data;
   }
-  deleteTask(id) {
-    return this._taskRepository.create(id);
+  async deleteTask(id) {
+    const data = await this._taskRepository.delete(id);
+    return data;
   }
-  getTaskList() {
-    return this._taskRepository.create(body);
+  async getTaskList() {
+    const data = await this._taskRepository.getAll();
+    return data;
   }
-  getTask(id) {
-    return this._taskRepository.create(id);
+  async getTask(id) {
+    const data = await this._taskRepository.find(id);
+    return data;
   }
 }
