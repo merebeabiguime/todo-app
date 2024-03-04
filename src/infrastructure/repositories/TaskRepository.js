@@ -5,8 +5,8 @@ export class TaskRepository {
     this._database = useDatabase();
   }
 
-  create(body) {}
-  update(body) {}
+  create({ name, dueDate, priority }) {}
+  update({ id, name, dueDate, priority }) {}
   find(id) {}
   getAll() {}
   delete(id) {}
