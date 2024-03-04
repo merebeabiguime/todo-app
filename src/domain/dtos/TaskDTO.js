@@ -23,4 +23,8 @@ export default class TaskDTO {
       body.hasOwnProperty("priority")
     );
   }
+
+  static toArray(body) {
+    return [body.name, body.dueDate, body.priority];
+  }
 }
