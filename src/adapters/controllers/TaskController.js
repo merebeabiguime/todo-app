@@ -1,3 +1,5 @@
+import TaskDTO from "../../domain/dtos/TaskDTO";
+
 export class TaskController {
   constructor(taskInteractor) {
     this._taskInteractor = taskInteractor;
@@ -6,7 +8,14 @@ export class TaskController {
     try {
       const body = req.body;
 
-      //Validation before sending to Interactor
+      /****Validation before sending to Interactor****/
+
+      //Check if the body matches the data structure of TaskDTO
+      if (!TaskDTO.isValid(body)) {
+        return res
+          .status(400)
+          .json({ error: "The body of the request doesn't match TaskDTO" });
+      }
 
       const data = await this._taskInteractor.createTask(body);
       return res.status(200).json(data);
@@ -18,7 +27,14 @@ export class TaskController {
     try {
       const body = req.body;
 
-      //Validation before sending to Interactor
+      /****Validation before sending to Interactor****/
+
+      //Check if the body matches the data structure of TaskDTO
+      if (!TaskDTO.isValid(body)) {
+        return res
+          .status(400)
+          .json({ error: "The body of the request doesn't match TaskDTO" });
+      }
 
       const data = await this._taskInteractor.updateTask(body);
       return res.status(200).json(data);
