@@ -6,7 +6,7 @@ export class TaskInteractor {
     const data = await this._taskRepository.create(body);
     return data;
   }
-  async updateTask() {
+  async updateTask(body) {
     const data = await this._taskRepository.update(body);
     return data;
   }
