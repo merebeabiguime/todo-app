@@ -1,4 +1,4 @@
-export default class TaskDTO {
+export class TaskDTO {
   static isValid(body) {
     if (!body.hasOwnProperty("id")) {
       throw new Error("Body should have an id property");

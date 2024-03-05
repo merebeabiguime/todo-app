@@ -1,5 +1,5 @@
-import TaskDTO from "../../domain/dtos/TaskDTO";
-import Task from "../../domain/entities/Task";
+import { TaskDTO } from "../../domain/dtos/TaskDTO.js";
+import { Task } from "../../domain/entities/Task.js";
 
 export class TaskController {
   constructor(taskInteractor) {
@@ -8,6 +8,7 @@ export class TaskController {
   async onCreateTask(req, res, next) {
     try {
       const body = req.body;
+      console.log("body", body);
 
       /****Validation before sending to Interactor****/
 

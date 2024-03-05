@@ -1,5 +1,5 @@
-import TaskDTO from "../../domain/dtos/TaskDTO";
-import { useDatabase } from "../data/dbConnection";
+import { TaskDTO } from "../../domain/dtos/TaskDTO.js";
+import { useDatabase } from "../data/dbConnection.js";
 
 export class TaskRepository {
   constructor() {
@@ -14,7 +14,7 @@ export class TaskRepository {
     const placeholders = Object.keys(body)
       .map(() => "?")
       .join(", ");
-    const [rows] = await _database.query(
+    const [rows] = await this._database.query(
       `INSERT INTO task (${columns}) VALUES (${placeholders})`,
       taskDTOarray
     );
@@ -29,24 +29,27 @@ export class TaskRepository {
     const sets = Object.keys(body)
       .map((key) => `${key} = ?`)
       .join(", ");
-    const [rows] = await _database.query(
+    const [rows] = await this._database.query(
       `UPDATE task SET ${sets} WHERE id = ?`,
       taskDTOarray
     );
     return rows[0];
   }
   async find(id) {
-    const [rows] = await _database.query(`SELECT * FROM task WHERE id = ?`, [
-      id,
-    ]);
+    const [rows] = await this._database.query(
+      `SELECT * FROM task WHERE id = ?`,
+      [id]
+    );
     return rows[0];
   }
   async getAll() {
-    const [rows] = await _database.query(`SELECT * FROM task`);
+    const [rows] = await this._database.query(`SELECT * FROM task`);
     return rows;
   }
   async delete(id) {
-    const [rows] = await _database.query(`DELETE FROM task WHERE id = ?`, [id]);
+    const [rows] = await this._database.query(`DELETE FROM task WHERE id = ?`, [
+      id,
+    ]);
     return rows[0];
   }
 }

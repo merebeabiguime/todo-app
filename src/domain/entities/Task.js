@@ -1,4 +1,4 @@
-export default class Task {
+export class Task {
   constructor({ id, name, dueDate, priority }) {
     if (!this.isValidId(id)) {
       throw new Error("Task id should be positive or null");
