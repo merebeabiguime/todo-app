@@ -52,7 +52,7 @@ export class TaskController {
 
       //Validation before sending to Interactor
 
-      const data = await this._taskInteractor.updateTask(id);
+      const data = await this._taskInteractor.deleteTask(id);
       return res.status(200).json(data);
     } catch (error) {
       next(error); // Pass the error to the next middleware(errorHandler)

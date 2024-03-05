@@ -26,17 +26,16 @@ export class TaskRepository {
     throw new Error("An error as occured while creating the task");
   }
   async update(body) {
+    const { id, ...bodyWithoutId } = body;
+    const taskDTOarray = TaskDTO.toArray(bodyWithoutId);
     //Transforming the body to a valid json array for sql query
-    const taskDTOarray = TaskDTO.toArray(body);
-    //Adding id at the end for the WHERE clause
-    taskDTOarray.push(body.id);
     // Mapping through body to dynamically create the SET part of the SQL query
-    const sets = Object.keys(body)
+    const sets = Object.keys(bodyWithoutId)
       .map((key) => `${key} = ?`)
       .join(", ");
     const [rows] = await this._database.query(
       `UPDATE task SET ${sets} WHERE id = ?`,
-      taskDTOarray
+      [...taskDTOarray, id]
     );
     if (rows.affectedRows === 1) {
       return "Task successfully updated";
