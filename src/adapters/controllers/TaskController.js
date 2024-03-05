@@ -1,4 +1,5 @@
 import TaskDTO from "../../domain/dtos/TaskDTO";
+import Task from "../../domain/entities/Task";
 
 export class TaskController {
   constructor(taskInteractor) {
@@ -17,7 +18,9 @@ export class TaskController {
           .json({ error: "The body of the request doesn't match TaskDTO" });
       }
 
-      const data = await this._taskInteractor.createTask(body);
+      const task = new Task(body);
+
+      const data = await this._taskInteractor.createTask(task.snapshot());
       return res.status(200).json(data);
     } catch (error) {
       //error handling
@@ -35,8 +38,8 @@ export class TaskController {
           .status(400)
           .json({ error: "The body of the request doesn't match TaskDTO" });
       }
-
-      const data = await this._taskInteractor.updateTask(body);
+      const task = new Task(body);
+      const data = await this._taskInteractor.updateTask(task.snapshot());
       return res.status(200).json(data);
     } catch (error) {
       //error handling

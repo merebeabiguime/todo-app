@@ -1,27 +1,31 @@
 export default class TaskDTO {
-  constructor(id, name, dueDate, priority) {
-    this.id = id;
-    this.name = name;
-    this.dueDate = dueDate;
-    this.priority = priority;
-  }
-
-  snapshot() {
-    return {
-      id: this.id,
-      name: this.name,
-      dueDate: this.dueDate,
-      priority: this.priority,
-    };
-  }
-
   static isValid(body) {
-    return (
-      body.hasOwnProperty("id") &&
-      body.hasOwnProperty("name") &&
-      body.hasOwnProperty("dueDate") &&
-      body.hasOwnProperty("priority")
-    );
+    if (!body.hasOwnProperty("id")) {
+      throw new Error("Body should have an id property");
+    }
+    if (!Number.isInteger(body.id)) {
+      throw new Error("id property should be an integer");
+    }
+    if (!body.hasOwnProperty("name")) {
+      throw new Error("Body should have a name property");
+    }
+    if (!typeof body.name === "string") {
+      throw new Error("name property should be a string");
+    }
+    if (!body.hasOwnProperty("dueDate")) {
+      throw new Error("Body should have a dueDate property");
+    }
+    if (!typeof body.dueDate === "string") {
+      throw new Error("dueDate property should be a string");
+    }
+    if (!body.hasOwnProperty("priority")) {
+      throw new Error("Body should have a priority property");
+    }
+    if (!typeof body.dueDate === "string") {
+      throw new Error("priority property should be a string");
+    }
+
+    return true;
   }
 
   static toArray(body) {
