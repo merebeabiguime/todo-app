@@ -5,7 +5,7 @@ export class TaskController {
   constructor(taskInteractor) {
     this._taskInteractor = taskInteractor;
   }
-  async onCreateTask(req, res) {
+  async onCreateTask(req, res, next) {
     try {
       const body = req.body;
 
@@ -23,10 +23,10 @@ export class TaskController {
       const data = await this._taskInteractor.createTask(task.snapshot());
       return res.status(200).json(data);
     } catch (error) {
-      //error handling
+      next(error); // Pass the error to the next middleware(errorHandler)
     }
   }
-  async onUpdateTask(req, res) {
+  async onUpdateTask(req, res, next) {
     try {
       const body = req.body;
 
@@ -42,10 +42,10 @@ export class TaskController {
       const data = await this._taskInteractor.updateTask(task.snapshot());
       return res.status(200).json(data);
     } catch (error) {
-      //error handling
+      next(error); // Pass the error to the next middleware(errorHandler)
     }
   }
-  async onDeleteTask(req, res) {
+  async onDeleteTask(req, res, next) {
     try {
       const id = parseInt(req.params.id);
 
@@ -54,20 +54,20 @@ export class TaskController {
       const data = await this._taskInteractor.updateTask(id);
       return res.status(200).json(data);
     } catch (error) {
-      //error handling
+      next(error); // Pass the error to the next middleware(errorHandler)
     }
   }
-  async onGetTaskList(req, res) {
+  async onGetTaskList(req, res, next) {
     try {
       //Validation before sending to Interactor
 
       const data = await this._taskInteractor.getTaskList();
       return res.status(200).json(data);
     } catch (error) {
-      //error handling
+      next(error); // Pass the error to the next middleware(errorHandler)
     }
   }
-  async onGetTask(req, res) {
+  async onGetTask(req, res, next) {
     try {
       const id = parseInt(req.params.id);
 
@@ -76,7 +76,7 @@ export class TaskController {
       const data = await this._taskInteractor.getTask(id);
       return res.status(200).json(data);
     } catch (error) {
-      //error handling
+      next(error); // Pass the error to the next middleware(errorHandler)
     }
   }
 }
