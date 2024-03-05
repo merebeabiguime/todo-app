@@ -6,6 +6,8 @@ POST http://localhost:3000/task/create
 Content-Type: application/json
 
 {
-    "title": "New Post",
-    "body": "This is a test post"
+    "id": 0,
+    "name": "This is a test post",
+    "dueDate": "une date",
+    "priority": "low"
 }

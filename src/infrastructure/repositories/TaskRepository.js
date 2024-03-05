@@ -7,18 +7,23 @@ export class TaskRepository {
   }
 
   async create(body) {
+    // Exclude 'id' from the columns and placeholders
+    const { id, ...bodyWithoutId } = body;
     //Transforming the body to a valid json array for sql query
-    const taskDTOarray = TaskDTO.toArray(body);
+    const taskDTOarray = TaskDTO.toArray(bodyWithoutId);
     //Mapping through body to dynamically create the sql request based on the DTO
-    const columns = Object.keys(body).join(", ");
-    const placeholders = Object.keys(body)
+    const columns = Object.keys(bodyWithoutId).join(", ");
+    const placeholders = Object.keys(bodyWithoutId)
       .map(() => "?")
       .join(", ");
     const [rows] = await this._database.query(
       `INSERT INTO task (${columns}) VALUES (${placeholders})`,
       taskDTOarray
     );
-    return rows[0];
+    if (rows.affectedRows === 1) {
+      return "Task successfully created";
+    }
+    throw new Error("An error as occured while creating the task");
   }
   async update(body) {
     //Transforming the body to a valid json array for sql query
@@ -33,14 +38,17 @@ export class TaskRepository {
       `UPDATE task SET ${sets} WHERE id = ?`,
       taskDTOarray
     );
-    return rows[0];
+    if (rows.affectedRows === 1) {
+      return "Task successfully updated";
+    }
+    throw new Error("An error as occured while updating the task");
   }
   async find(id) {
     const [rows] = await this._database.query(
       `SELECT * FROM task WHERE id = ?`,
       [id]
     );
-    return rows[0];
+    return rows;
   }
   async getAll() {
     const [rows] = await this._database.query(`SELECT * FROM task`);
@@ -50,6 +58,9 @@ export class TaskRepository {
     const [rows] = await this._database.query(`DELETE FROM task WHERE id = ?`, [
       id,
     ]);
-    return rows[0];
+    if (rows.affectedRows === 1) {
+      return "Task successfully delete";
+    }
+    throw new Error("An error as occured while deleting the task");
   }
 }
