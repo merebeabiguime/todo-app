@@ -1,7 +1,7 @@
 export class Task {
   constructor({ id, name, dueDate, priority }) {
     if (!this.isValidId(id)) {
-      throw new Error("Task id should be positive or null");
+      throw new Error("Task id should be positive or 0");
     }
     if (!this.isValidName(name)) {
       throw new Error("Task name cannot be empty");
@@ -32,6 +32,6 @@ export class Task {
     return name === "" ? false : true;
   }
   isValidPriority(priority) {
-    return ["low", "medium", "high"].includes(priority.toLowerCase());
+    return ["low", "medium", "high"].includes(String(priority).toLowerCase());
   }
 }
