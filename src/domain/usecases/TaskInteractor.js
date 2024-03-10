@@ -4,10 +4,16 @@ export class TaskInteractor {
   }
   async createTask(body) {
     const data = await this._taskRepository.create(body);
+    if (!data.id) {
+      throw new Error("Unable to create a Task");
+    }
     return data;
   }
   async updateTask(body) {
     const data = await this._taskRepository.update(body);
+    if (!data.id) {
+      throw new Error("Unable to update a Task");
+    }
     return data;
   }
   async deleteTask(id) {
