@@ -22,6 +22,9 @@ export class TaskInteractor {
   }
   async getTaskList() {
     const data = await this._taskRepository.getAll();
+    if (data.length === 0) {
+      throw new Error("No tasks found");
+    }
     return data;
   }
   async getTask(id) {

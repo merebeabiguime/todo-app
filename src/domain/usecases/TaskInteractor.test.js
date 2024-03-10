@@ -1,9 +1,19 @@
 import { TaskInteractor } from "./TaskInteractor";
 import { faker } from "@faker-js/faker";
+import { Factory } from "rosie";
 
 //Initialize mock repository and interactor
 var mockTaskRepo = {};
 var taskInteractor = {};
+
+const productFactory = new Factory()
+  .attr("id", faker.number.int({ min: 1, max: 1000 }))
+  .attr("name", faker.person.jobTitle())
+  .attr("dueDate", String(faker.date.future()))
+  .attr(
+    "priority",
+    () => ["low", "medium", "high"][Math.floor(Math.random() * 3)]
+  );
 
 const mockProduct = () => {
   return {
@@ -28,7 +38,11 @@ class MockTaskRepository {
     return "Task successfully deleted";
   }
 
-  async get(id) {
+  async getAll() {
+    //No need to implement anything here
+  }
+
+  async find(id) {
     return [{ id: 1, name: "Task 1", dueDate: "demain", priority: "medium" }];
   }
 }
@@ -107,6 +121,36 @@ describe("Testing Task Interactor", () => {
       });
 
       await expect(taskInteractor.updateTask(reqBody)).rejects.toThrow(
+        "Error from repo"
+      );
+    });
+  });
+  describe("get all tasks", () => {
+    test("When we try to get all tasks it returns an array of task object", async () => {
+      const randomLimit = faker.number.int({ min: 1, max: 10 });
+      const products = productFactory.buildList(randomLimit);
+
+      jest.spyOn(mockTaskRepo, "getAll").mockImplementationOnce(() => {
+        return products;
+      });
+      const result = await taskInteractor.getTaskList();
+      expect(result).toMatchObject(products);
+    });
+    test("When there is no task the interactor throws an error", async () => {
+      jest.spyOn(mockTaskRepo, "getAll").mockImplementation(() => {
+        return [];
+      });
+
+      await expect(taskInteractor.getTaskList()).rejects.toThrow(
+        "No tasks found"
+      );
+    });
+    test("When there an error from the repo we should be able to catch it", async () => {
+      jest.spyOn(mockTaskRepo, "getAll").mockImplementationOnce(() => {
+        throw new Error("Error from repo");
+      });
+
+      await expect(taskInteractor.getTaskList()).rejects.toThrow(
         "Error from repo"
       );
     });
