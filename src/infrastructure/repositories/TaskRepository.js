@@ -58,7 +58,7 @@ export class TaskRepository {
       id,
     ]);
     if (rows.affectedRows === 1) {
-      return "Task successfully delete";
+      return "Task successfully deleted";
     }
     throw new Error("An error as occured while deleting the task");
   }
