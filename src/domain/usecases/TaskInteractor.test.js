@@ -2,7 +2,7 @@ import { TaskInteractor } from "./TaskInteractor";
 import { faker } from "@faker-js/faker";
 import { Factory } from "rosie";
 
-//Initialize mock repository and interactor
+//Initializing mock repository and interactor
 var mockTaskRepo = {};
 var taskInteractor = {};
 
